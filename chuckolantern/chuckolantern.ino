@@ -106,6 +106,45 @@ void gradual()
     }
 
 }
+
+void flicker()
+{
+    // try to flicker like a candle...
+    int baseColor = 6; //between 0 and 63
+    int flickerLength = 10; //length of flicker in MS
+    if(random(100) > 85)
+    {
+      for(x=0;x<8;x++)
+      {
+        for(y=0;y<8;y++)
+        {
+          //Paint random colors
+          //Rb.setPixelZXY(z,x,y,RED[i],GREEN[i],BLUE[i]); //uses R, G and B color bytes
+          Rb.setPixelXY(x,y,0,0,0); //uses R, G and B color bytes
+        }
+      }
+      delay(random(flickerLength));
+    }
+    else
+    {
+      int offset = random(6); //how much to randomize color
+      for(x=0;x<8;x++)
+      {
+        for(y=0;y<8;y++)
+        {
+          //Paint random colors
+          //Rb.setPixelZXY(z,x,y,RED[i],GREEN[i],BLUE[i]); //uses R, G and B color bytes
+          Rb.setPixelXY(x,y,RED[baseColor + offset],GREEN[baseColor + offset],BLUE[baseColor + offset]); //uses R, G and B color bytes
+      
+        }
+      }
+      delay(random(400)); //how long to delay before checking for another flicker...
+      motionSense = digitalRead(motionPin);
+      if(motionSense == 1)
+        return;
+    }
+
+}
 void loop()
 {
    if (motionSense == 1)
@@ -113,5 +152,6 @@ void loop()
     stutter(); //or do -
     // fast();
    }
-   else gradual();
+   else flicker(); // or do -
+   //   gradual();
 }
